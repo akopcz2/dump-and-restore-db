@@ -1,0 +1,19 @@
+{
+  "name": "dump-and-restore-db",
+  "version": "1.0.0",
+  "description": "Dump and Restore Mongo Db",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "mongo"
+  ],
+  "author": "Adrian Kopczewski",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "globby": "^6.1.0",
+    "shelljs": "^0.7.8"
+  }
+}
