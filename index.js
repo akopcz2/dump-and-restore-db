@@ -1,48 +1,40 @@
 require('dotenv').config()
+let extend = require('./lib/extend');
 let fs = require("fs");
 let shell = require('shelljs');
 const globby = require('globby');
 let path = require('path');
-let util = require('util');
 
+let database = process.env.MONGO_URI;
+database = database.split('/').pop();
 
-function dumpAndRestoreDb(){
+let databaseServer = process.env.MONGO_URI;
+databaseServer = databaseServer.split('/')[2];
 
-    //get db from env
-    let database = process.env.MONGO_URI;
-    database = database.split('/').pop();
+class DumpAndRestoreDB{
 
-    let databaseServer = process.env.MONGO_URI;
-    databaseServer = databaseServer.split('/')[2];
+    constructor(options){
 
-    init();
+        this.defaults = {
+            safeMode: true,
+            deleteDump :true,
+            deleteDatabase: true
+        };
 
-    //Delete Database before restore to prevent any duplicate indexes
-
-    function deleteDump(){
-        shell.exec('rm -rf dump');
-        console.log('Deleted Dump');
+		this.settings = extend({}, this.defaults, options);
+        
     }
 
-    function deleteDatabase(){
-        shell.exec(`mongo ${databaseServer}/${database} --eval "db.dropDatabase()"`);
-        console.log('Deleted Database');
-    };
-    //Unzips the Dump
-    /**
-     * @param {object} zip 
-     */
-    function unzipDump(zip){
-        shell.exec(`unzip -o  ${zip}`, () => {
-            console.log('unziped');
-        });
-    }
-
-    //Runs Init Function
-    function init(){
+    init(){
         let totalZips = [];
-        // deleteDump();
-        // deleteDatabase();
+        if(!this.settings.safeMode){
+            if(!this.settings.deleteDump){
+                deleteDump();
+            }
+            if(!this.settings.deleteDatabase){
+            deleteDatabase();
+            }
+        }
         globby(['*.zip']).then(zip => {
             let allZips = Object.keys(zip).map(function(key){
                 let eachZip = (zip[key]);
@@ -76,12 +68,39 @@ function dumpAndRestoreDb(){
             restoreDataBase();
         });
     }
-
-    //Restores the database without indexes
-    function restoreDataBase(){
-        shell.exec(`mongorestore --host ${databaseServer} --port 27017 --db ${database} --noIndexRestore dump/${database}`, () => {
-            console.log('restored');
-        });
-    }
 }
-module.exports = dumpAndRestoreDb;
+
+
+
+
+let testing = () => {
+    console.log('testing');
+};
+
+let deleteDump = () => {
+    shell.exec('rm -rf dump');
+    console.log('Deleted Dump');
+}
+
+let deleteDatabase =  () => {
+    shell.exec(`mongo ${databaseServer}/${database} --eval "db.dropDatabase()"`);
+    console.log('Deleted Database');
+}
+
+/**
+ * @param {object} zip 
+ */
+let unzipDump = (zip) =>{
+    shell.exec(`unzip -o  ${zip}`, () => {
+        console.log('unziped');
+    });
+}
+
+//Restores the database without indexes
+let restoreDataBase = () =>{
+    shell.exec(`mongorestore --host ${databaseServer} --port 27017 --db ${database} --noIndexRestore dump/${database}`, () => {
+        console.log('restored');
+    });
+}
+
+module.exports = DumpAndRestoreDB;
