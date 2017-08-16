@@ -23,7 +23,6 @@ class DumpAndRestoreDB{
         };
 
 		this.settings = extend({}, this.defaults, options);
-        
     }
 
     init(){
