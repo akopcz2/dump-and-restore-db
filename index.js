@@ -41,8 +41,8 @@ function dumpAndRestoreDb(){
     //Runs Init Function
     function init(){
         let totalZips = [];
-        deleteDump();
-        deleteDatabase();
+        // deleteDump();
+        // deleteDatabase();
         globby(['*.zip']).then(zip => {
             let allZips = Object.keys(zip).map(function(key){
                 let eachZip = (zip[key]);
