@@ -1,4 +1,4 @@
-
+let shell = require('shelljs');
 exports.deleteDump = () => {
     shell.exec('rm -rf dump');
     console.log('Deleted Dump');
