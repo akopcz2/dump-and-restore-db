@@ -12,6 +12,7 @@ npm install
 ```
 example of restore.js settings with dump and database deletion enabled
 the default config is set to fault to prevent any kind unwanted of database and dump deletion
+
 ```javascript
 let dumpAndRestore = require('dump-and-restore-db');
 
@@ -25,7 +26,6 @@ let dumpp = new dumpAndRestore(config).init();
 ```
 
 
-
 Make sure your env var has a mongo url i.e
 ```javascript
 MONGO_URI=mongodb://localhost/bah-cobc
@@ -36,9 +36,5 @@ Currently have this implemented as an npm script inside package.json
 npm run restore
 ```
 
-The restore.js file (lives at root)
-```javascript
-let dumpAndRestore = require('dump-and-restore-db');
-dumpAndRestore();
-```
+
 
