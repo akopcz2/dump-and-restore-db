@@ -1,10 +1,12 @@
 # Dump-and-restore-db
 
+Current Implementation only works via env file and default mongo port
+these are required for the script to run
 
-## Warning Only use this if you have database backups - This will drop your db
-
-
-Current Implementation only works with mongo and specific env file
+Make sure your env var has a mongo url
+```javascript
+MONGO_URI=mongodb://localhost/databaseName
+```
 
 Getting Started
 ```javascript
@@ -23,12 +25,6 @@ var config = {
 };
 
 let dumpp = new dumpAndRestore(config).init();
-```
-
-
-Make sure your env var has a mongo url i.e
-```javascript
-MONGO_URI=mongodb://localhost/databaseName
 ```
 
 Currently have this implemented as an npm script inside package.json
