@@ -1,7 +1,11 @@
 # Dump-and-restore-db
 
 Current Implementation only works via env file and default mongo port
-these are required for the script to run
+
+these are required for the script to run and a zip of the database in the root
+
+example of zip database name
+> 7_15_2017_1502825122_databaseName.zip
 
 Make sure your env var has a mongo url
 ```javascript
