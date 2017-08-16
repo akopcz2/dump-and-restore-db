@@ -4,7 +4,7 @@ exports.deleteDump = () => {
     console.log('Deleted Dump');
 }
 
-exports.deleteDatabase = () => {
+exports.deleteDatabase = (databaseServer, database) => {
     shell.exec(`mongo ${databaseServer}/${database} --eval "db.dropDatabase()"`);
     console.log('Deleted Database');
 }
@@ -19,7 +19,7 @@ exports.unzipDump = (zip) => {
 }
 
 //Restores the database without indexes
-exports.restoreDataBase = () => {
+exports.restoreDataBase = (databaseServer, database) => {
     shell.exec(`mongorestore --host ${databaseServer} --port 27017 --db ${database} --noIndexRestore dump/${database}`, () => {
         console.log('restored');
     });

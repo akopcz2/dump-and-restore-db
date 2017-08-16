@@ -33,7 +33,7 @@ class DumpAndRestoreDB{
                 util.deleteDump();
             }
             if(!this.settings.deleteDatabase){
-                util.deleteDatabase();
+                util.deleteDatabase(databaseServer, database);
             }
         }
         globby(['*.zip']).then(zip => {
@@ -66,7 +66,7 @@ class DumpAndRestoreDB{
             let latestZip = splitArray[0][1];
             util.unzipDump(latestZip);
         }).then(zip => {
-            util.restoreDataBase();
+            util.restoreDataBase(databaseServer, database);
         });
     }
 }
