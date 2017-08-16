@@ -4,6 +4,7 @@ let fs = require("fs");
 let shell = require('shelljs');
 const globby = require('globby');
 let path = require('path');
+let util = require('./util/util');
 
 let database = process.env.MONGO_URI;
 database = database.split('/').pop();
@@ -29,10 +30,10 @@ class DumpAndRestoreDB{
         let totalZips = [];
         if(!this.settings.safeMode){
             if(!this.settings.deleteDump){
-                deleteDump();
+                util.deleteDump();
             }
             if(!this.settings.deleteDatabase){
-            deleteDatabase();
+                util.deleteDatabase();
             }
         }
         globby(['*.zip']).then(zip => {
@@ -63,44 +64,11 @@ class DumpAndRestoreDB{
                 });
             };
             let latestZip = splitArray[0][1];
-            unzipDump(latestZip);
+            util.unzipDump(latestZip);
         }).then(zip => {
-            restoreDataBase();
+            util.restoreDataBase();
         });
     }
-}
-
-
-
-
-let testing = () => {
-    console.log('testing');
-};
-
-let deleteDump = () => {
-    shell.exec('rm -rf dump');
-    console.log('Deleted Dump');
-}
-
-let deleteDatabase =  () => {
-    shell.exec(`mongo ${databaseServer}/${database} --eval "db.dropDatabase()"`);
-    console.log('Deleted Database');
-}
-
-/**
- * @param {object} zip 
- */
-let unzipDump = (zip) =>{
-    shell.exec(`unzip -o  ${zip}`, () => {
-        console.log('unziped');
-    });
-}
-
-//Restores the database without indexes
-let restoreDataBase = () =>{
-    shell.exec(`mongorestore --host ${databaseServer} --port 27017 --db ${database} --noIndexRestore dump/${database}`, () => {
-        console.log('restored');
-    });
 }
 
 module.exports = DumpAndRestoreDB;
