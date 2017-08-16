@@ -40,30 +40,35 @@ class DumpAndRestoreDB{
                 let eachZip = (zip[key]);
                 totalZips.push(eachZip);
             });
-            let splitArray = [];
-            for (let i = 0; i< totalZips.length; i++){
-                splitArray[i] = [];
-            }
+            if(totalZips.length > 1){
+                let splitArray = [];
+                for (let i = 0; i< totalZips.length; i++){
+                    splitArray[i] = [];
+                }
 
-            for(let [index, date] of totalZips.entries()) {
-                let splitDate = date.split(`${database}.zip`).join('_').split('_').join('');
-                splitArray[index].push(splitDate);
-                splitArray[index].push(date);
-            }
-            for(let i = 0 ; i< totalZips.length; i ++){
-                splitArray.sort(function(a, b){
-                    if (a[i] === b[i]) {
-                        return 0;
-                    }
-                    else {
-                        if(a[i] < b[i]){
-                            return(b[i][i]);
+                for(let [index, date] of totalZips.entries()) {
+                    let splitDate = date.split(`${database}.zip`).join('_').split('_').join('');
+                    splitArray[index].push(splitDate);
+                    splitArray[index].push(date);
+                }
+                for(let i = 0 ; i < totalZips.length; i ++){
+                    splitArray.sort(function(a, b){
+                        if (a[i] === b[i]) {
+                            return 0;
                         }
-                    }
-                });
-            };
-            let latestZip = splitArray[0][1];
-            util.unzipDump(latestZip);
+                        else {
+                            if(a[i] < b[i]){
+                                return(b[i][i]);
+                            }
+                        }
+                    });
+                };
+                let latestZip = splitArray[0][1];
+                util.unzipDump(latestZip);
+            }
+            else{
+                util.unzipDump(zip);
+            }
         }).then(zip => {
             util.restoreDataBase(databaseServer, database);
         });
