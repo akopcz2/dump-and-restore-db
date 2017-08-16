@@ -28,7 +28,7 @@ let dumpp = new dumpAndRestore(config).init();
 
 Make sure your env var has a mongo url i.e
 ```javascript
-MONGO_URI=mongodb://localhost/bah-cobc
+MONGO_URI=mongodb://localhost/databaseName
 ```
 
 Currently have this implemented as an npm script inside package.json
