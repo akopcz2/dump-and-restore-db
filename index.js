@@ -12,6 +12,13 @@ database = database.split('/').pop();
 let databaseServer = process.env.MONGO_URI;
 databaseServer = databaseServer.split('/')[2];
 
+let mongoPort;
+if(process.env.MONGO_PORT){
+    let mongoPort = process.env.MONGO_PORT;
+}
+else{
+    mongoPort = '27017';
+}
 class DumpAndRestoreDB{
 
     constructor(options){
@@ -70,7 +77,7 @@ class DumpAndRestoreDB{
                 util.unzipDump(zip);
             }
         }).then(zip => {
-            util.restoreDataBase(databaseServer, database);
+            util.restoreDataBase(databaseServer, database, mongoPort);
         });
     }
 }

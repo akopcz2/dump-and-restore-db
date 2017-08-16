@@ -19,8 +19,9 @@ exports.unzipDump = (zip) => {
 }
 
 //Restores the database without indexes
-exports.restoreDataBase = (databaseServer, database) => {
-    shell.exec(`mongorestore --host ${databaseServer} --port 27017 --db ${database} --noIndexRestore dump/${database}`, () => {
+exports.restoreDataBase = (databaseServer, database, port) => {
+    let portNumber = (port) ? port : '27017';
+    shell.exec(`mongorestore --host ${databaseServer} --port ${portNumber} --db ${database} --noIndexRestore dump/${database}`, () => {
         console.log('restored');
     });
 }
