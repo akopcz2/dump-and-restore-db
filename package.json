@@ -1,6 +1,6 @@
 {
   "name": "dump-and-restore-db",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Dump and Restore Mongo Db",
   "main": "index.js",
   "scripts": {
