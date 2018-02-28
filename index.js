@@ -25,8 +25,8 @@ class DumpAndRestoreDB{
 
         this.defaults = {
             safeMode: true,
-            deleteDump :true,
-            deleteDatabase: true
+            deleteDump :false,
+            deleteDatabase: false
         };
 
 		this.settings = extend({}, this.defaults, options);
@@ -35,10 +35,10 @@ class DumpAndRestoreDB{
     init(){
         let totalZips = [];
         if(!this.settings.safeMode){
-            if(!this.settings.deleteDump){
+            if(this.settings.deleteDump){
                 util.deleteDump();
             }
-            if(!this.settings.deleteDatabase){
+            if(this.settings.deleteDatabase){
                 util.deleteDatabase(databaseServer, database);
             }
         }
